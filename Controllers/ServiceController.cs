@@ -1,11 +1,13 @@
 ﻿using LifetimeServices.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace LifetimeServices.Controllers
 {
     public class ServiceController : Controller
     {
+        ILogger<ServiceController> _logger;
         ITransient _transientService1;
         ITransient _transientService2;
 
@@ -14,7 +16,7 @@ namespace LifetimeServices.Controllers
 
         ISingleton _singletonService1;
         ISingleton _singletonService2;
-        public ServiceController(ITransient transientService1, ITransient transientService2, IScoped scopedService1,IScoped scopedService2, ISingleton singletonService1, ISingleton singletonService2)
+        public ServiceController(ILogger<ServiceController> logger, ITransient transientService1, ITransient transientService2, IScoped scopedService1,IScoped scopedService2, ISingleton singletonService1, ISingleton singletonService2)
         {
             _transientService1 = transientService1;
             _transientService2 = transientService2;
@@ -26,6 +28,8 @@ namespace LifetimeServices.Controllers
 
             _singletonService1 = singletonService1;
             _singletonService2 = singletonService2;
+
+            _logger = logger;
         }
         public IActionResult Index()
         {
